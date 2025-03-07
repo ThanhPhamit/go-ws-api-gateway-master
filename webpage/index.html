@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+</head>
+
+<body>
+    <button id="sendMessage">Send Message</button>
+
+    <script>
+        const ws = new WebSocket(
+            'wss://hv80ceqyc7.execute-api.ap-northeast-3.amazonaws.com/prod'
+        );
+        ws.onopen = () => console.log('opened');
+        ws.onclose = () => console.log('closed');
+
+        setInterval(() => {
+            const message = {
+                action: 'PING',
+                payload: {},
+            };
+
+            ws.send(JSON.stringify(message));
+        }, 60000);
+
+        document.getElementById('sendMessage').onclick = () => {
+            const message = {
+                action: 'MESSAGE',
+                payload: {
+                    message: 'Random message'
+                },
+            };
+
+            ws.send(JSON.stringify(message));
+        }
+
+        ws.onmessage = (e) => console.log(e)
+    </script>
+</body>
+
+</html>
