@@ -13,23 +13,24 @@
 
     <script>
         const ws = new WebSocket(
-            'wss://hv80ceqyc7.execute-api.ap-northeast-3.amazonaws.com/prod'
+            'wss://wy1ff4ouhh.execute-api.ap-northeast-3.amazonaws.com/production'
         );
         ws.onopen = () => console.log('opened');
         ws.onclose = () => console.log('closed');
 
         setInterval(() => {
+            console.log('ping');
             const message = {
                 action: 'PING',
                 payload: {},
             };
 
             ws.send(JSON.stringify(message));
-        }, 60000);
+        }, 1000 * 60 * 2);
 
         document.getElementById('sendMessage').onclick = () => {
             const message = {
-                action: 'MESSAGE',
+                action: 'SENDMESSAGE',
                 payload: {
                     message: 'Random message'
                 },
@@ -38,7 +39,7 @@
             ws.send(JSON.stringify(message));
         }
 
-        ws.onmessage = (e) => console.log(e)
+        ws.onmessage = (e) => console.log("Received message: ", e.data);
     </script>
 </body>
 
